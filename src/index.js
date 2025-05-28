@@ -1,3 +1,7 @@
 import './css/general.css';
+import { DOMController } from './DOMController';
 
-alert('loaded');
+
+DOMController.loadEvents()
+
+
