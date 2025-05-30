@@ -11,13 +11,14 @@ body {
 
 main {
   display: grid;
-  grid-template-rows: 1fr 1fr 1fr;
-  grid-template-columns: 1fr 1fr 1fr;
+  grid-template-rows: 1fr 1fr;
+  grid-template-columns: 300px 1fr;
   grid-template-areas:
-    'search search search'
-    'day week week'
+    'search search'
+    'day week'
   ;
 
+  column-gap: 3rem;
 }
 
 input,
@@ -47,7 +48,8 @@ button {
 
 .todayInfo-container {
   background-color: gray;
-  width: 200px;
+  width: 100%;
+  height: 100%;
   text-align: center;
   place-self: center;
   display: flex;
