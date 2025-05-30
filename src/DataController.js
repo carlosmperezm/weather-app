@@ -35,6 +35,10 @@ export class DataController {
     return weekData
   }
 
+  static getNextSevenDays(data) {
+    return data.days.slice(1, 8)
+  }
+
   static getTemperature(dayData) {
     const temp = dayData.temp
     const tempMin = dayData.tempmin
