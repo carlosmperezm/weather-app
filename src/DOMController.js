@@ -4,6 +4,7 @@ import cloudyIconPath from './assets/icons/cloudy.png'
 import rainyIconPath from './assets/icons/rainy-day.png'
 import celsiusIconPath from './assets/icons/celsius.png'
 import fahrenheitIconPath from './assets/icons/fahrenheit.png'
+import windIconPath from './assets/icons/wind.png'
 
 import { WeatherAPIController } from "./APIController"
 import { DataController } from "./DataController";
@@ -104,6 +105,8 @@ export class DOMController {
     const minTemperatureElement = document.createElement('p')
     const maxTemperatureElement = document.createElement('p')
     const windSpeedElement = document.createElement('p')
+    const windSpeedIcon = document.createElement('img')
+    const windDataElement = document.createElement('span')
 
     cardContainer.classList.add('todayInfo-container')
 
@@ -126,8 +129,13 @@ export class DOMController {
     maxTemperatureElement.textContent = maxTemperature
     maxTemperatureElement.classList.add('maxTemperature')
 
-    windSpeedElement.textContent = windSpeed
+    windSpeedIcon.src = windIconPath
+    windSpeedIcon.classList.add('icon')
+    windDataElement.textContent = windSpeed
+    windSpeedElement.classList.add('wind-container')
 
+    windSpeedElement.appendChild(windSpeedIcon)
+    windSpeedElement.appendChild(windDataElement)
 
     moreInfoContainer.appendChild(descriptionElement)
     moreInfoContainer.appendChild(minTemperatureElement)
@@ -191,7 +199,7 @@ export class DOMController {
           dataController.getDescription(todayData),
           `Min Temp: ${todayMinTemp}`,
           `Max Temp: ${todayMaxTemp}`,
-          `Wind Speed: ${windSpeed}`
+          windSpeed
         )
       DOMController.displayTodayCard(todayCard)
 
@@ -222,7 +230,6 @@ export class DOMController {
 }
 
 
+/// TODO: Improve desing overall
 //
-// TODO: Add Temperature switch option (C to F) and (F to C)
-//
-// TODO: Improve desing overall
+//TODO: Add loading when whe app is waiting for the server
