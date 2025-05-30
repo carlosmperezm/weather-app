@@ -10,6 +10,7 @@ body {
 }
 
 main {
+  position: relative;
   display: grid;
   grid-template-rows: 1fr 1fr;
   grid-template-columns: 300px 1fr;
@@ -17,8 +18,19 @@ main {
     'search search'
     'day week'
   ;
-
   column-gap: 3rem;
+}
+
+.degree-mode {
+  position: absolute;
+  width: 70px;
+  height: 70px;
+  top: 0;
+  right: 10px;
+}
+
+.degree-mode:hover {
+  cursor: pointer;
 }
 
 input,
