@@ -1,4 +1,7 @@
-import iconPath from './assets/icons/sun.png'
+import sunIconPath from './assets/icons/sun.png'
+import cloudsIconPath from './assets/icons/cloud.png'
+import cloudyIconPath from './assets/icons/cloudy.png'
+import rainyIconPath from './assets/icons/rainy-day.png'
 
 import { WeatherAPIController } from "./APIController"
 import { DataController } from "./DataController";
@@ -9,7 +12,7 @@ export class DOMController {
   static dayData;
 
   static createCard(
-    date, baseTemperature, minTemperature, maxTemperature
+    date, baseTemperature, minTemperature, maxTemperature, conditions = ''
   ) {
     const cardContainer = document.createElement('div')
     const dateElement = document.createElement('p')
@@ -22,8 +25,18 @@ export class DOMController {
 
     dateElement.textContent = date
 
+    if (conditions.toLowerCase().includes('rain')) {
+      iconImg.src = rainyIconPath;
+    } else if (conditions.toLowerCase().includes('cloudy')) {
+      iconImg.src = cloudyIconPath
+    } else if (conditions.toLowerCase().includes('clear')) {
+      iconImg.src = sunIconPath
+    } else {
+      iconImg.src = cloudsIconPath
+    }
+
+
     iconImg.classList.add('icon')
-    iconImg.src = iconPath
 
     temperatureElement.textContent = baseTemperature
 
@@ -147,7 +160,8 @@ export class DOMController {
               day.datetime,
               `Temp: ${day.temp}`,
               `Min Temp: ${day.tempmin}`,
-              `Max Temp: ${day.tempmax} `
+              `Max Temp: ${day.tempmax}`,
+              day.conditions
             )
             DOMController.addCardToWeek(card)
           })
@@ -162,11 +176,6 @@ export class DOMController {
 
 }
 
-// TODO: Clean all the cards when a new location is searched
-// Right now they are stacking on top of each other
-//
-// TODO: Change the sun icon for one that describes better what is 
-// the current weather of that day
 //
 // TODO: Add Temperature switch option (C to F) and (F to C)
 //
