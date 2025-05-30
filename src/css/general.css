@@ -1,3 +1,96 @@
+* {
+  box-sizing: border-box;
+}
+
 body {
-  background-color: Gray;
+  background: url('../assets/clouds.jpg');
+  display: flex;
+  flex-direction: column;
+  align-content: center;
+}
+
+main {
+  display: grid;
+  grid-template-rows: 1fr 1fr 1fr;
+  grid-template-columns: 1fr 1fr 1fr;
+  grid-template-areas:
+    'search search search'
+    'day week week'
+  ;
+
+}
+
+input,
+button {
+  border-radius: 20px;
+}
+
+.icon {
+  width: 100px;
+}
+
+.search-container {
+  grid-area: search;
+  place-self: center;
+  width: 50%;
+  text-align: center;
+}
+
+#locationInput {
+  width: 70%;
+}
+
+/* Today's weather section */
+.todayInfo-container {
+  grid-area: day;
+}
+
+.todayInfo-container {
+  background-color: gray;
+  width: 200px;
+  text-align: center;
+  place-self: center;
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+
+}
+
+.todayInfo-container .name-container {
+  display: flex;
+  flex-direction: column;
+  background-color: yellowgreen;
+}
+
+.todayInfo-container .name-container h1 {
+  margin: 0;
+}
+
+/* Today's Temperature */
+.todayInfo-container .todayTemperature {
+  font-size: 4rem;
+}
+
+/* Today's details */
+.todayInfo-container .moreInfo-container p {
+  margin: 10px;
+
+}
+
+/* Week section */
+.weekInfo-container {
+  grid-area: week;
+  display: flex;
+  gap: 2rem;
+  flex-wrap: wrap;
+}
+
+.card-container {
+  background-color: gray;
+  width: 200px;
+  text-align: center;
+}
+
+.dayCard-container #dayDate {
+  font-size: 2rem;
 }
