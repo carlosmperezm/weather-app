@@ -1,73 +1,92 @@
 
 export class DataController {
+  #data;
 
-  static getDay(dayNumber, data) {
+  constructor(data) {
+    this.#data = data
+  }
+
+  get address() {
+    return this.#data.address
+  }
+
+  get fullAddress() {
+    return this.#data.resolvedAddress
+  }
+
+  getDescription(data = this.#data) {
+    return data.description
+  }
+
+  getDayConditions(dayData) {
+    return dayData.conditions
+  }
+
+  getDay(dayNumber) {
     // The day number starts from zero
     if (dayNumber < 0 || dayNumber > 14) {
       return { msg: 'Only the days within two weeks are available' }
     }
-    const dayData = data.days[dayNumber]
+    const dayData = this.#data.days[dayNumber]
     return dayData
   }
 
-  static getHour(hourNumber, dayNumber, data) {
+  getDatetime(dayData) {
+    return dayData.datetime
+  }
+
+  getHour(hourNumber, dayNumber) {
     // Hour number must start from 0-23
     if (hourNumber < 0 || hourNumber > 23) {
       return { msg: 'Must be an hour number between 0 and 24' }
     }
-    const dayData = DataController.getDay(dayNumber, data)
+    const dayData = getDay(dayNumber)
     const hourData = dayData.hours[hourNumber]
     return hourData
   }
 
-  static getWeek(weekNumber, data) {
-    // Only two weeks are allowed 
-    // so the values for weekNumber can only be 1 or 2
-    let weekData;
-    if (weekNumber < 1 || weekNumber > 2) {
-      return { msg: 'Only values of 1 and 2 are allowed' }
+  get nextSevenDays() {
+    const days = []
+    // const days = this.#data.days.slice(1,8)
+    for (let i = 1; i <= 7; i++) {
+      const day = this.getDay(i)
+      days.push(day)
     }
-    if (weekNumber === 1) {
-      weekData = data.days.slice(0, 7);
-    } else if (weekNumber === 2) {
-      weekData = data.days.slice(8);
+    return days
+  }
+
+  getMinTemperature(dayData, degreeMode = 'fahrenheit') {
+    let tempMin = dayData.tempmin
+    if (degreeMode === 'celsius') {
+      tempMin = this.toCelsius(tempMin)
     }
-    return weekData
+    return tempMin
+  }
+  getMaxTemperature(dayData, degreeMode = 'fahrenheit') {
+    let tempMax = dayData.tempmax
+    if (degreeMode === 'celsius') {
+      tempMax = this.toCelsius(tempMax)
+    }
+    return tempMax
+  }
+  getTemperature(dayData, degreeMode = 'fahrenheit') {
+    let temp = dayData.temp
+    if (degreeMode === 'celsius') {
+      temp = this.toCelsius(temp)
+    }
+    return temp
   }
 
-  static getNextSevenDays(data) {
-    return data.days.slice(1, 8)
-  }
-
-  static getTemperature(dayData) {
-    const temp = dayData.temp
-    const tempMin = dayData.tempmin
-    const tempMax = dayData.tempmax
-    return { temp, tempMin, tempMax }
-  }
-
-  static getFeelslike(dayData) {
-    const feelsLike = dayData.feelslike
-    const feelsLikeMin = dayData.feelslikemin
-    const feelsLikeMax = dayData.feelslikemax
-    return { feelsLike, feelsLikeMin, feelsLikeMax }
-  }
-
-  static getHumidity(dayData) {
-    const humidity = dayData.humidity
-    return humidity
-  }
-
-  static getWind(dayData) {
+  getWind(dayData) {
     const windSpeed = dayData.windspeed
     return windSpeed
   }
 
-  static toCelsius(fahrenheitTemperature) {
+  toCelsius(fahrenheitTemperature) {
     const celsiusTemperature = (fahrenheitTemperature - 32) * 5 / 9
     return celsiusTemperature.toFixed(2)
   }
-  static toFahrenheit(celsiusTemperature) {
+  toFahrenheit(celsiusTemperature) {
     const fahrenheitTemperature = (celsiusTemperature * 9 / 5) + 32
     return fahrenheitTemperature.toFixed(2)
   }
