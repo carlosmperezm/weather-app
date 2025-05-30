@@ -119,6 +119,12 @@ export class DOMController {
             .getCityWeather(DOMController.#locationInput.value)
 
           console.log(data)
+          //Delete the previous data
+          const weekInfoContainer = document
+            .querySelectorAll('.card-container')
+          weekInfoContainer.forEach(card => {
+            card.parentElement.removeChild(card)
+          })
 
           // Display Todays Card
           const todayData = DataController.getDay(0, data)
@@ -126,7 +132,7 @@ export class DOMController {
             .createTodayCard(
               data.address,
               data.resolvedAddress,
-              `Temp: ${todayData.temp}`,
+              `${todayData.temp}`,
               todayData.description,
               `Min Temp: ${todayData.tempmin}`,
               `Max Temp: ${todayData.tempmax}`,
@@ -145,8 +151,6 @@ export class DOMController {
             )
             DOMController.addCardToWeek(card)
           })
-
-
         } catch (e) {
           console.error(e)
 
@@ -157,3 +161,13 @@ export class DOMController {
   }
 
 }
+
+// TODO: Clean all the cards when a new location is searched
+// Right now they are stacking on top of each other
+//
+// TODO: Change the sun icon for one that describes better what is 
+// the current weather of that day
+//
+// TODO: Add Temperature switch option (C to F) and (F to C)
+//
+// TODO: Improve desing overall
