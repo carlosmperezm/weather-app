@@ -221,7 +221,7 @@ input[type='search']:focus-visible {
 
 .credits {
   position: absolute;
-  bottom: 0;
+  bottom: -10rem;
 }
 
 @keyframes rotate {
