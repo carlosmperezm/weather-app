@@ -217,25 +217,34 @@ export class DOMController {
 
 
   static async displayData() {
+    const body = document.body
+    if (body.classList.contains('error-screen')) {
+      document.body.classList.remove('error-screen')
+      const errorText = document.querySelector('.error-msg')
+      document.body.removeChild(errorText)
+
+    }
+
+    const data = await WeatherAPIController
+      .getCityWeather(DOMController.#locationInput.value)
+
+    const dataController = new DataController(data)
+    const degreeMode = DOMController.#degreeModeElement.dataset.mode
+
+    console.log(data)
+
+    //Delete the previous data
+    const weekInfoContainer = document
+      .querySelectorAll('.card-container')
+    weekInfoContainer.forEach(card => {
+      card.parentElement.removeChild(card)
+    })
+    const todayCardContainer = document.querySelectorAll('.todayInfo-container')
+    todayCardContainer.forEach(card => {
+      card.parentElement.removeChild(card)
+    })
+
     try {
-      const data = await WeatherAPIController
-        .getCityWeather(DOMController.#locationInput.value)
-      const dataController = new DataController(data)
-      const degreeMode = DOMController.#degreeModeElement.dataset.mode
-
-      console.log(data)
-
-      //Delete the previous data
-      const weekInfoContainer = document
-        .querySelectorAll('.card-container')
-      weekInfoContainer.forEach(card => {
-        card.parentElement.removeChild(card)
-      })
-      const todayCardContainer = document.querySelectorAll('.todayInfo-container')
-      todayCardContainer.forEach(card => {
-        card.parentElement.removeChild(card)
-      })
-
       // Display Todays Card
       const todayData = dataController.getDay(0)
       const todayTemp = dataController.getTemperature(todayData, degreeMode)
@@ -276,10 +285,22 @@ export class DOMController {
     } catch (e) {
       console.error(e)
 
+      DOMController.DisplayErrorScreen('Location Not Found 🦗')
+
     }
+  }
+
+  static DisplayErrorScreen(msg) {
+    const body = document.body
+    const text = document.createElement('h1')
+    text.classList.add('error-msg')
+    text.textContent = msg
+    body.className = 'error-screen'
+    body.appendChild(text)
   }
 
 }
 
 
 //TODO: Add loading when whe app is waiting for the server
+//TODO: Add a message Error when the location wasn't found

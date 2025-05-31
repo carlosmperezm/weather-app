@@ -194,3 +194,16 @@ input[type='search']:focus-visible {
 .dayCard-container #dayDate {
   font-size: 2rem;
 }
+
+.error-screen {
+  background: url('../assets/404.jpg');
+  /* font-size: 5rem; */
+}
+
+.error-msg {
+  position: absolute;
+  place-self: center;
+  top: 40%;
+  font-size: 4rem;
+
+}
