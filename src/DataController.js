@@ -84,11 +84,11 @@ export class DataController {
 
   toCelsius(fahrenheitTemperature) {
     const celsiusTemperature = (fahrenheitTemperature - 32) * 5 / 9
-    return celsiusTemperature.toFixed(2)
+    return celsiusTemperature.toFixed(1)
   }
   toFahrenheit(celsiusTemperature) {
     const fahrenheitTemperature = (celsiusTemperature * 9 / 5) + 32
-    return fahrenheitTemperature.toFixed(2)
+    return fahrenheitTemperature.toFixed(1)
   }
 
 }
