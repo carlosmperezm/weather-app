@@ -5,6 +5,7 @@ import rainyIconPath from './assets/icons/rainy-day.png'
 import celsiusIconPath from './assets/icons/celsius.png'
 import fahrenheitIconPath from './assets/icons/fahrenheit.png'
 import windIconPath from './assets/icons/wind.png'
+import tempIconPath from './assets/icons/temperature.png'
 
 import { WeatherAPIController } from "./APIController"
 import { DataController } from "./DataController";
@@ -40,6 +41,10 @@ export class DOMController {
     const dateElement = document.createElement('p')
     const iconImg = document.createElement('img')
     const temperatureElement = document.createElement('p')
+    const baseTemp = document.createElement('span')
+    const tempIcon = document.createElement('img')
+    const minmaxTempContainer = document.createElement('div')
+    const tempValuesContainer = document.createElement('div')
     const minTemperatureElement = document.createElement('p')
     const maxTemperatureElement = document.createElement('p')
 
@@ -60,17 +65,34 @@ export class DOMController {
 
     iconImg.classList.add('icon')
 
-    temperatureElement.textContent = baseTemperature
+    baseTemp.textContent = baseTemperature
+    baseTemp.classList.add('base-temperature')
+
+    minmaxTempContainer.classList.add('minmax-temp-container')
+
+    tempIcon.src = tempIconPath
+    tempIcon.classList.add('icon')
+
+    tempValuesContainer.classList.add('tempValues-container')
 
     minTemperatureElement.textContent = minTemperature
+    minTemperatureElement.classList.add('minTemperature')
 
+    maxTemperatureElement.classList.add('maxTemperature')
     maxTemperatureElement.textContent = maxTemperature
+
+    tempValuesContainer.appendChild(maxTemperatureElement)
+    tempValuesContainer.appendChild(minTemperatureElement)
+
+    minmaxTempContainer.appendChild(tempIcon)
+    minmaxTempContainer.appendChild(tempValuesContainer)
+
+    temperatureElement.appendChild(baseTemp)
+    temperatureElement.appendChild(minmaxTempContainer)
 
     cardContainer.appendChild(dateElement)
     cardContainer.appendChild(iconImg)
     cardContainer.appendChild(temperatureElement)
-    cardContainer.appendChild(minTemperatureElement)
-    cardContainer.appendChild(maxTemperatureElement)
 
     return cardContainer;
   }
@@ -102,6 +124,9 @@ export class DOMController {
     const temperatureElement = document.createElement('p')
     const moreInfoContainer = document.createElement('div')
     const descriptionElement = document.createElement('p')
+    const minmaxTempContainer = document.createElement('div')
+    const tempIcon = document.createElement('img')
+    const tempValuesContainer = document.createElement('p')
     const minTemperatureElement = document.createElement('p')
     const maxTemperatureElement = document.createElement('p')
     const windSpeedElement = document.createElement('p')
@@ -123,6 +148,15 @@ export class DOMController {
 
     descriptionElement.textContent = description
 
+    descriptionElement.classList.add('description')
+
+    minmaxTempContainer.classList.add('minmax-temp-container')
+
+    tempIcon.src = tempIconPath
+    tempIcon.classList.add('icon')
+
+    tempValuesContainer.classList.add('tempValues-container')
+
     minTemperatureElement.textContent = minTemperature
     minTemperatureElement.classList.add('minTemperature')
 
@@ -134,12 +168,17 @@ export class DOMController {
     windDataElement.textContent = windSpeed
     windSpeedElement.classList.add('wind-container')
 
+    tempValuesContainer.appendChild(maxTemperatureElement)
+    tempValuesContainer.appendChild(minTemperatureElement)
+
+    minmaxTempContainer.appendChild(tempIcon)
+    minmaxTempContainer.appendChild(tempValuesContainer)
+
     windSpeedElement.appendChild(windSpeedIcon)
     windSpeedElement.appendChild(windDataElement)
 
     moreInfoContainer.appendChild(descriptionElement)
-    moreInfoContainer.appendChild(minTemperatureElement)
-    moreInfoContainer.appendChild(maxTemperatureElement)
+    moreInfoContainer.appendChild(minmaxTempContainer)
     moreInfoContainer.appendChild(windSpeedElement)
 
     nameContainer.appendChild(cityNameElement)
@@ -164,9 +203,18 @@ export class DOMController {
 
       })
 
-    DOMController.#searchButton
-      .addEventListener('click', () => DOMController.displayData())
+    DOMController.#searchButton.addEventListener(
+      'click',
+      () => DOMController.displayData()
+    )
+    document.body.addEventListener(
+      'keypress',
+      (e) => {
+        if (e.key === 'Enter') DOMController.displayData()
+      })
+
   }
+
 
   static async displayData() {
     try {
@@ -183,6 +231,10 @@ export class DOMController {
       weekInfoContainer.forEach(card => {
         card.parentElement.removeChild(card)
       })
+      const todayCardContainer = document.querySelectorAll('.todayInfo-container')
+      todayCardContainer.forEach(card => {
+        card.parentElement.removeChild(card)
+      })
 
       // Display Todays Card
       const todayData = dataController.getDay(0)
@@ -197,8 +249,8 @@ export class DOMController {
           dataController.fullAddress,
           todayTemp,
           dataController.getDescription(todayData),
-          `Min Temp: ${todayMinTemp}`,
-          `Max Temp: ${todayMaxTemp}`,
+          `Min: ${todayMinTemp}`,
+          `Max: ${todayMaxTemp}`,
           windSpeed
         )
       DOMController.displayTodayCard(todayCard)
@@ -214,9 +266,9 @@ export class DOMController {
 
         const card = DOMController.createCard(
           datetime,
-          `Temp: ${temp}`,
-          `Min Temp: ${minTemp}`,
-          `Max Temp: ${maxTemp}`,
+          temp,
+          `Min: ${minTemp}`,
+          `Max: ${maxTemp}`,
           conditions
         )
         DOMController.addCardToWeek(card)
@@ -230,6 +282,4 @@ export class DOMController {
 }
 
 
-/// TODO: Improve desing overall
-//
 //TODO: Add loading when whe app is waiting for the server

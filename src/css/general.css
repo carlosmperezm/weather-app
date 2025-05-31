@@ -1,7 +1,9 @@
 * {
   box-sizing: border-box;
   --acent-color: #97d0fb;
-  --radius: 20px
+  --radius: 20px;
+  --second-color: #4b5fd9;
+  --third-color: #e03f69;
 }
 
 body {
@@ -82,7 +84,7 @@ input[type='search']:focus-visible {
 .todayInfo-container {
   grid-area: day;
   width: 100%;
-  height: 600px;
+  /* height: 700px; */
   max-height: 700px;
   text-align: center;
   place-self: start;
@@ -90,7 +92,7 @@ input[type='search']:focus-visible {
   flex-direction: column;
   gap: 2rem;
   background-color: transparent;
-  backdrop-filter: blur(20px);
+  backdrop-filter: blur(10px);
 
 }
 
@@ -108,23 +110,61 @@ input[type='search']:focus-visible {
 /* Today's Temperature */
 .todayInfo-container .todayTemperature {
   font-size: 4rem;
+  margin: 0;
 }
 
 /* Today's details */
-.todayInfo-container .moreInfo-container p {
-  margin: 10px;
+.description {
+  transform: translateY(-.5rem);
+}
+
+/* Temperature styles */
+.base-temperature {
+  font-size: 2rem;
+  margin: 0;
 }
 
 .todayInfo-container .icon {
   height: 50px;
   width: 50px;
+  place-self: center;
+}
+
+.minmax-temp-container {
+  margin-top: 1rem;
+  display: flex;
+  flex-direction: column;
+  /* background-color: greenyellow; */
+}
+
+.minmax-temp-container .icon {
+  width: 60px;
+  height: 50px;
+  place-self: center;
+}
+
+
+.minTemperature {
+  color: var(--second-color);
+}
+
+.maxTemperature {
+  color: var(--third-color);
+}
+
+.tempValues-container {
+  margin: 0;
+  transform: translateY(-10px);
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
 }
 
 .wind-container {
   display: flex;
-  /* background-color: yellowgreen; */
   justify-content: center;
   gap: 1rem;
+  /* margin-bottom: 2rem; */
 }
 
 .wind-container span {
@@ -144,11 +184,10 @@ input[type='search']:focus-visible {
 
 .card-container {
   background-color: gray;
-  width: 180px;
-  height: 300px;
+  width: 250px;
   text-align: center;
   background-color: transparent;
-  backdrop-filter: blur(20px);
+  backdrop-filter: blur(10px);
 
 }
 
