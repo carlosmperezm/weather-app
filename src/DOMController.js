@@ -197,36 +197,47 @@ export class DOMController {
 
     // DOMController.#degreeModeElement.data.mode = 'fahrenheit'
     DOMController.#degreeModeElement.addEventListener(
-      'click', () => {
+      'click', async () => {
         DOMController.toggleDegreeMode()
-        DOMController.displayData()
+        const data = await WeatherAPIController
+          .getCityWeather(DOMController.#locationInput.dataset.location)
+        DOMController.displayData(data)
 
       })
 
     DOMController.#searchButton.addEventListener(
       'click',
-      () => DOMController.displayData()
+      async () => {
+        const data = await WeatherAPIController
+          .getCityWeather(DOMController.#locationInput.value)
+        DOMController.displayData(data)
+      }
     )
     document.body.addEventListener(
       'keypress',
-      (e) => {
-        if (e.key === 'Enter') DOMController.displayData()
+      async (e) => {
+        if (e.key === 'Enter') {
+          const data = await WeatherAPIController
+            .getCityWeather(DOMController.#locationInput.value)
+          DOMController.displayData(data)
+        }
       })
 
   }
 
 
-  static async displayData() {
+  static displayData(data) {
     const body = document.body
     if (body.classList.contains('error-screen')) {
-      document.body.classList.remove('error-screen')
+      body.classList.remove('error-screen')
       const errorText = document.querySelector('.error-msg')
-      document.body.removeChild(errorText)
+      body.removeChild(errorText)
+    }
+    if (DOMController.#locationInput.value !== '') {
+      DOMController.#locationInput.dataset.location = DOMController.#locationInput.value
+      DOMController.#locationInput.value = ''
 
     }
-
-    const data = await WeatherAPIController
-      .getCityWeather(DOMController.#locationInput.value)
 
     const dataController = new DataController(data)
     const degreeMode = DOMController.#degreeModeElement.dataset.mode
