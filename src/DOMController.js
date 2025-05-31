@@ -6,6 +6,7 @@ import celsiusIconPath from './assets/icons/celsius.png'
 import fahrenheitIconPath from './assets/icons/fahrenheit.png'
 import windIconPath from './assets/icons/wind.png'
 import tempIconPath from './assets/icons/temperature.png'
+import loadingIconPath from './assets/icons/hurricane.png'
 
 import { WeatherAPIController } from "./APIController"
 import { DataController } from "./DataController";
@@ -24,7 +25,6 @@ export class DOMController {
 
   static toggleDegreeMode() {
     const degreeMode = DOMController.#degreeModeElement.dataset.mode
-    console.log('degreeMode: ', degreeMode)
     if (degreeMode === 'celsius') {
       DOMController.#degreeModeElement.src = fahrenheitIconPath
       DOMController.#degreeModeElement.dataset.mode = 'fahrenheit'
@@ -198,30 +198,51 @@ export class DOMController {
     // DOMController.#degreeModeElement.data.mode = 'fahrenheit'
     DOMController.#degreeModeElement.addEventListener(
       'click', async () => {
-        DOMController.toggleDegreeMode()
+        // Try dislplay the animation here
+        DOMController.displayAnimation()
+
+        // fetch the data
         const data = await WeatherAPIController
           .getCityWeather(DOMController.#locationInput.dataset.location)
         DOMController.displayData(data)
+
+        DOMController.toggleDegreeMode()
+        // Remove the loading icon
+        const loadingIcon = document.querySelector('.loading')
+        document.body.removeChild(loadingIcon)
 
       })
 
     DOMController.#searchButton.addEventListener(
       'click',
       async () => {
+        // Try dislplay the animation here
+        DOMController.displayAnimation()
+        // fetch the data
         const data = await WeatherAPIController
           .getCityWeather(DOMController.#locationInput.value)
         DOMController.displayData(data)
+        // Remove the loading icon
+        const loadingIcon = document.querySelector('.loading')
+        document.body.removeChild(loadingIcon)
       }
     )
     document.body.addEventListener(
       'keypress',
       async (e) => {
         if (e.key === 'Enter') {
+          // Try dislplay the animation here
+          DOMController.displayAnimation()
+          // fetch the data
           const data = await WeatherAPIController
             .getCityWeather(DOMController.#locationInput.value)
           DOMController.displayData(data)
+          // Remove the loading icon
+          const loadingIcon = document.querySelector('.loading')
+          document.body.removeChild(loadingIcon)
         }
       })
+
 
   }
 
@@ -236,13 +257,11 @@ export class DOMController {
     if (DOMController.#locationInput.value !== '') {
       DOMController.#locationInput.dataset.location = DOMController.#locationInput.value
       DOMController.#locationInput.value = ''
-
     }
+
 
     const dataController = new DataController(data)
     const degreeMode = DOMController.#degreeModeElement.dataset.mode
-
-    console.log(data)
 
     //Delete the previous data
     const weekInfoContainer = document
@@ -295,9 +314,7 @@ export class DOMController {
       })
     } catch (e) {
       console.error(e)
-
       DOMController.DisplayErrorScreen('Location Not Found 🦗')
-
     }
   }
 
@@ -310,8 +327,12 @@ export class DOMController {
     body.appendChild(text)
   }
 
+  static displayAnimation() {
+    const loadingIcon = document.createElement('img')
+    loadingIcon.src = loadingIconPath
+    loadingIcon.classList.add('loading')
+    document.body.appendChild(loadingIcon)
+  }
+
 }
 
-
-//TODO: Add loading when whe app is waiting for the server
-//TODO: Add a message Error when the location wasn't found
