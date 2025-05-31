@@ -11,6 +11,7 @@ body {
   display: flex;
   flex-direction: column;
   align-content: center;
+  position: relative;
 }
 
 main {
@@ -23,6 +24,8 @@ main {
     'day week'
   ;
   column-gap: 3rem;
+
+  margin-bottom: 5rem;
 }
 
 .degree-mode {
@@ -220,8 +223,10 @@ input[type='search']:focus-visible {
 }
 
 .credits {
-  position: absolute;
+  position: relative;
+  transform: translateY(-5rem);
   bottom: -10rem;
+  place-self: center;
 }
 
 @keyframes rotate {
